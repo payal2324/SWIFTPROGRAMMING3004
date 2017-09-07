@@ -1,0 +1,455 @@
+CREATE TABLE student1
+(
+	( sid INT (5) ,
+	snm varchar(25) ,
+	sgen VARCHAR(10), 
+	sage INT (3) 
+	);
+	
+	
+	INSERT INTO student1 VALUES (1,'Aman','Male','25');
+	or
+	
+	INSERT student1 VALUES (1,'Any','Female','35');
+	or
+	
+	INSERT INTO student1 (sid,snm,sgen,sage) VALUES (3, 'Karishma', 'Female', '24'); // interchange v kr skde ya. and it does 1 to one mapping. automatic w
+	
+	INSERT INTO student1 (snm,sid,sgen) VALUES("Kanika", '4' , 'Female');
+	SELECT * from student1;
+	
+	+------+----------+--------+------+
+| sid  | snm      | sgen   | sage |
++------+----------+--------+------+
+|    1 | Aman     | Male   |   25 |
+|    1 | Any      | Female |   30 |
+|    3 | Karishma | Female |   24 |
+|    4 | Kanika   | Female | NULL |
++------+----------+--------+------+
+
+
+SELECT snm,sage from student1;                   PROJECTION
++----------+------+
+| snm      | sage |
++----------+------+
+| Aman     |   25 |
+| Any      |   30 |
+| Karishma |   24 |
+| Kanika   | NULL |
+| Kanika   | NULL |
++----------+------+
+
+
+SELECT * FROM student1 WHERE Sid='1';			SELECTION
++------+------+--------+------+
+| sid  | snm  | sgen   | sage |
++------+------+--------+------+
+|    1 | Aman | Male   |   25 |
+|    1 | Any  | Female |   30 |
++------+------+--------+------+
+
+MariaDB [testdb]> SELECT * FROM student1 where Sid='1';
++------+------+--------+------+
+| sid  | snm  | sgen   | sage |
++------+------+--------+------+
+|    1 | Aman | Male   |   25 |
+|    1 | Any  | Female |   30 |
++------+------+--------+------+
+2 rows in set (0.00 sec)
+
+MariaDB [testdb]> INSERT INTO student1  VALUES("John", '5' ,'Male','35');
+Query OK, 1 row affected, 1 warning (0.08 sec)
+
+MariaDB [testdb]> SELECT * FROM student1 where Sid>'2';
++------+----------+--------+------+
+| sid  | snm      | sgen   | sage |
++------+----------+--------+------+
+|    3 | Karishma | Female |   24 |
+|    4 | Kanika   | Female | NULL |
+|    4 | Kanika   | Female | NULL |
++------+----------+--------+------+
+3 rows in set (0.00 sec)
+
+MariaDB [testdb]> SELECT * FROM student1 where Sid>='2';
++------+----------+--------+------+
+| sid  | snm      | sgen   | sage |
++------+----------+--------+------+
+|    3 | Karishma | Female |   24 |
+|    4 | Kanika   | Female | NULL |
+|    4 | Kanika   | Female | NULL |
++------+----------+--------+------+
+3 rows in set (0.00 sec)
+
+MariaDB [testdb]> SELECT * FROM student1 where Sid >='4';
++------+--------+--------+------+
+| sid  | snm    | sgen   | sage |
++------+--------+--------+------+
+|    4 | Kanika | Female | NULL |
+|    4 | Kanika | Female | NULL |
++------+--------+--------+------+
+2 rows in set (0.02 sec)
+
+MariaDB [testdb]> SELECT * FROM student1 where Sid !='1';
++------+----------+--------+------+
+| sid  | snm      | sgen   | sage |
++------+----------+--------+------+
+|    3 | Karishma | Female |   24 |
+|    4 | Kanika   | Female | NULL |
+|    4 | Kanika   | Female | NULL |
+|    0 | 5        | Male   |   35 |
++------+----------+--------+------+
+
+MariaDB [testdb]> select * from student1 where sgen = 'male';
++------+------+------+------+
+| sid  | snm  | sgen | sage |
++------+------+------+------+
+|    1 | Aman | Male |   25 |
+|    0 | 5    | Male |   35 |
++------+------+------+------+
+2 rows in set (0.00 sec)
+
+MariaDB [testdb]> select * from student1 where sgen != 'male';
++------+----------+--------+------+
+| sid  | snm      | sgen   | sage |
++------+----------+--------+------+
+|    1 | Any      | Female |   30 |
+|    3 | Karishma | Female |   24 |
+|    4 | Kanika   | Female | NULL |
+|    4 | Kanika   | Female | NULL |
++------+----------+--------+------+
+4 rows in set (0.00 sec)
+
+MariaDB [testdb]> select * from student1 LIMIT 2;
++------+------+--------+------+
+| sid  | snm  | sgen   | sage |
++------+------+--------+------+
+|    1 | Aman | Male   |   25 |
+|    1 | Any  | Female |   30 |
++------+------+--------+------+
+2 rows in set (0.00 sec)
+
+MariaDB [testdb]> select * from student1 LIMIT 3;
++------+----------+--------+------+
+| sid  | snm      | sgen   | sage |
++------+----------+--------+------+
+|    1 | Aman     | Male   |   25 |
+|    1 | Any      | Female |   30 |
+|    3 | Karishma | Female |   24 |
++------+----------+--------+------+
+3 rows in set (0.00 sec)
+
+select * from student1 where sgen = 'male' and sid='1';
++------+------+------+------+
+| sid  | snm  | sgen | sage |
++------+------+------+------+
+|    1 | Aman | Male |   25 |
++------+------+------+------+
+1 row in set (0.00 sec)
+
+MariaDB [testdb]> select * from student1 where sgen = 'male' and sid='3';
+Empty set (0.00 sec)
+
+MariaDB [testdb]> select * from student1 where sgen = 'male' or sid='3';
++------+----------+--------+------+
+| sid  | snm      | sgen   | sage |
++------+----------+--------+------+
+|    1 | Aman     | Male   |   25 |
+|    3 | Karishma | Female |   24 |
+|    0 | 5        | Male   |   35 |
++------+----------+--------+------+
+3 rows in set (0.00 sec)
+ select * from student1 where sgen = 'male' or sid!='3';
++------+--------+--------+------+
+| sid  | snm    | sgen   | sage |
++------+--------+--------+------+
+|    1 | Aman   | Male   |   25 |
+|    1 | Any    | Female |   30 |
+|    4 | Kanika | Female | NULL |
+|    4 | Kanika | Female | NULL |
+|    0 | 5      | Male   |   35 |
++------+--------+--------+------+
+ desc student1;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| sid   | int(5)      | YES  |     | NULL    |       |
+| snm   | varchar(25) | YES  |     | NULL    |       |
+| sgen  | varchar(10) | YES  |     | NULL    |       |
+| sage  | int(3)      | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+MariaDB [testdb]> describe student1;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| sid   | int(5)      | YES  |     | NULL    |       |
+| snm   | varchar(25) | YES  |     | NULL    |       |
+| sgen  | varchar(10) | YES  |     | NULL    |       |
+| sage  | int(3)      | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+
+https://www.tutorialspoint.com/dbms/dbms_codds_rules.htm
+
+show create table student1\G
+*************************** 1. row ***************************
+       Table: student1
+Create Table: CREATE TABLE `student1` (
+  `sid` int(5) DEFAULT NULL,
+  `snm` varchar(25) DEFAULT NULL,
+  `sgen` varchar(10) DEFAULT NULL,
+  `sage` int(3) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+1 row in set (0.00 sec)   // describes 5th codd rule
+
+
+MariaDB [testdb]> show create table student1
+    ->
+    -> ;
++----------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table    | Create Table                                                                                                                                                                                    |
++----------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| student1 | CREATE TABLE `student1` (
+  `sid` int(5) DEFAULT NULL,
+  `snm` varchar(25) DEFAULT NULL,
+  `sgen` varchar(10) DEFAULT NULL,
+  `sage` int(3) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 |
++----------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+select * from student1 where snm like 'ka%';
++------+----------+--------+------+
+| sid  | snm      | sgen   | sage |
++------+----------+--------+------+
+|    3 | Karishma | Female |   24 |
+|    4 | Kanika   | Female | NULL |
+|    4 | Kanika   | Female | NULL |
++------+----------+--------+------+
+3 rows in set (0.00 sec)
+
+MariaDB [testdb]> select * from student1 where snm like 'a%';
++------+------+--------+------+
+| sid  | snm  | sgen   | sage |
++------+------+--------+------+
+|    1 | Aman | Male   |   25 |
+|    1 | Any  | Female |   30 |
++------+------+--------+------+
+2 rows in set (0.00 sec)
+
+MariaDB [testdb]> select * from student1 where snm like '%a';
++------+----------+--------+------+
+| sid  | snm      | sgen   | sage |
++------+----------+--------+------+
+|    3 | Karishma | Female |   24 |
+|    4 | Kanika   | Female | NULL |
+|    4 | Kanika   | Female | NULL |
++------+----------+--------+------+
+3 rows in set (0.00 sec)
+
+MariaDB [testdb]> select * from student1 where snm like '_a%';
++------+----------+--------+------+
+| sid  | snm      | sgen   | sage |
++------+----------+--------+------+
+|    3 | Karishma | Female |   24 |
+|    4 | Kanika   | Female | NULL |
+|    4 | Kanika   | Female | NULL |
++------+----------+--------+------+
+3 rows in set (0.00 sec)
+
+MariaDB [testdb]> select * from student1 where snm like '_m%';
++------+------+------+------+
+| sid  | snm  | sgen | sage |
++------+------+------+------+
+|    1 | Aman | Male |   25 |
++------+------+------+------+
+1 row in set (0.00 sec)
+
+MariaDB [testdb]> select * from student1 where snm like 'a__';
++------+------+--------+------+
+| sid  | snm  | sgen   | sage |
++------+------+--------+------+
+|    1 | Any  | Female |   30 |
++------+------+--------+------+
+1 row in set (0.00 sec)
+ select * from student1 where snm like '_m%' or '_n%';
++------+------+------+------+
+| sid  | snm  | sgen | sage |
++------+------+------+------+
+|    1 | Aman | Male |   25 |
++------+------+------+------+
+1 row in set, 4 warnings (0.00 sec)
+
+MariaDB [testdb]> select * from student1 where snm like '_m%' || '_n%';
++------+------+------+------+
+| sid  | snm  | sgen | sage |
++------+------+------+------+
+|    1 | Aman | Male |   25 |
++------+------+------+------+
+1 row in set, 4 warnings (0.00 sec)
+
+MariaDB [testdb]> select * from student1 where snm like '_m%' || snm like '_n%';
++------+------+--------+------+
+| sid  | snm  | sgen   | sage |
++------+------+--------+------+
+|    1 | Aman | Male   |   25 |
+|    1 | Any  | Female |   30 |
++------+------+--------+------+
+2 rows in set (0.00 sec)
+
+MariaDB [testdb]> select * from student1 where 1; // universal true
++------+----------+--------+------+
+| sid  | snm      | sgen   | sage |
++------+----------+--------+------+
+|    1 | Aman     | Male   |   25 |
+|    1 | Any      | Female |   30 |
+|    3 | Karishma | Female |   24 |
+|    4 | Kanika   | Female | NULL |
+|    4 | Kanika   | Female | NULL |
+|    0 | 5        | Male   |   35 |
++------+----------+--------+------+
+6 rows in set (0.00 sec)
+
+    -> select * from student1 where 0; // universally false
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '// universal true
+select * from student1 where 0' at line 1
+    -> select * from student1 where snm like '_m%' or '_n%'; // string is not identified
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '// universally false
+select * from student1 where snm like '_m%' or '_n%'' at line 1
+    -> select * from student1 where snm where sage BETWEEN 20 and 25;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '// string is not identified
+select * from student1 where snm where sage BETWEEN ' at line 1
+MariaDB [testdb]> select * from student1 where sage BETWEEN 20 and 25;
++------+----------+--------+------+
+| sid  | snm      | sgen   | sage |
++------+----------+--------+------+
+|    1 | Aman     | Male   |   25 |
+|    3 | Karishma | Female |   24 |
++------+----------+--------+------+
+2 rows in set (0.00 sec)
+
+MariaDB [testdb]> select * from student1 where sage BETWEEN 20 and 30;
++------+----------+--------+------+
+| sid  | snm      | sgen   | sage |
++------+----------+--------+------+
+|    1 | Aman     | Male   |   25 |
+|    1 | Any      | Female |   30 |
+|    3 | Karishma | Female |   24 |
++------+----------+--------+------+
+3 rows in set (0.00 sec)
+
+MariaDB [testdb]> select * from student1 where sage >= 20 or >= 30;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '>= 30' at line 1
+MariaDB [testdb]> select * from student1 where sage >= 20 or <= 30;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '<= 30' at line 1
+MariaDB [testdb]> select * from student1 where sage in (24,30);
++------+----------+--------+------+
+| sid  | snm      | sgen   | sage |
++------+----------+--------+------+
+|    1 | Any      | Female |   30 |
+|    3 | Karishma | Female |   24 |
++------+----------+--------+------+
+2 rows in set (0.00 sec)
+
+MariaDB [testdb]> select * from student1 where sage in (24,30); // to match list of values
++------+----------+--------+------+
+| sid  | snm      | sgen   | sage |
++------+----------+--------+------+
+|    1 | Any      | Female |   30 |
+|    3 | Karishma | Female |   24 |
++------+----------+--------+------+
+2 rows in set (0.00 sec)
+
+    -> select * from student1 where sage >= 20 or sage <= 30;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '// to match list of values
+select * from student1 where sage >= 20 or sage <= 30' at line 1
+MariaDB [testdb]> select * from student1 where sage !in (24,30); // to match list of values
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '!in (24,30)' at line 1
+    ->
+	MariaDB [testdb]> select * from student1;
++------+----------+--------+------+------+
+| sid  | snm      | sgen   | sage | city |
++------+----------+--------+------+------+
+|    1 | Aman     | Male   |   25 | NULL |
+|    1 | Any      | Female |   30 | NULL |
+|    3 | Karishma | Female |   24 | NULL |
+|    4 | Kanika   | Female | NULL | NULL |
+|    4 | Kanika   | Female | NULL | NULL |
+|    0 | 5        | Male   |   35 | NULL |
++------+----------+--------+------+------+
+6 rows in set (0.00 sec)
+
+MariaDB [testdb]> ALTER TABLE student1  ADD surname VARCHAR(50) AFTER Snm;
+Query OK, 0 rows affected (0.35 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [testdb]> select * from student1;
++------+----------+---------+--------+------+------+
+| sid  | snm      | surname | sgen   | sage | city |
++------+----------+---------+--------+------+------+
+|    1 | Aman     | NULL    | Male   |   25 | NULL |
+|    1 | Any      | NULL    | Female |   30 | NULL |
+|    3 | Karishma | NULL    | Female |   24 | NULL |
+|    4 | Kanika   | NULL    | Female | NULL | NULL |
+|    4 | Kanika   | NULL    | Female | NULL | NULL |
+|    0 | 5        | NULL    | Male   |   35 | NULL |
++------+----------+---------+--------+------+------+
+6 rows in set (0.00 sec)
+
+MariaDB [testdb]> desc student1;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| sid     | int(5)      | YES  |     | NULL    |       |
+| snm     | varchar(25) | YES  |     | NULL    |       |
+| surname | varchar(50) | YES  |     | NULL    |       |
+| sgen    | varchar(10) | YES  |     | NULL    |       |
+| sage    | int(3)      | YES  |     | NULL    |       |
+| city    | varchar(50) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+MariaDB [testdb]> select sid as STUDENTID from student1;
++-----------+
+| STUDENTID |
++-----------+
+|         1 |
+|         1 |
+|         3 |
+|         4 |
+|         4 |
+|         0 |
++-----------+
+6 rows in set (0.00 sec)
+
+MariaDB [testdb]> select sid,  STUDENTID from student1;
+ERROR 1054 (42S22): Unknown column 'STUDENTID' in 'field list'
+MariaDB [testdb]> select sid,  "STUDENTID" from student1;
++------+-----------+
+| sid  | STUDENTID |
++------+-----------+
+|    1 | STUDENTID |
+|    1 | STUDENTID |
+|    3 | STUDENTID |
+|    4 | STUDENTID |
+|    4 | STUDENTID |
+|    0 | STUDENTID |
++------+-----------+
+6 rows in set (0.00 sec)
+
+MariaDB [testdb]> select sid,  'STUDENTID' from student1;
++------+-----------+
+| sid  | STUDENTID |
++------+-----------+
+|    1 | STUDENTID |
+|    1 | STUDENTID |
+|    3 | STUDENTID |
+|    4 | STUDENTID |
+|    4 | STUDENTID |
+|    0 | STUDENTID |
++------+-----------+
+6 rows in set (0.00 sec)
+
+MariaDB [testdb]> select sid,  STUDENT ID from student1;
+ERROR 1054 (42S22): Unknown column 'STUDENT' in 'field list'
+	
+	
