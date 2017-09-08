@@ -1,0 +1,648 @@
+MariaDB [testdb]> SELECT VERSION();   //shows  version of sql
++-----------------+
+| VERSION()       |
++-----------------+
+| 10.1.21-MariaDB |
++-----------------+
+1 row in set (0.00 sec)
+
+MariaDB [testdb]> SELECT USER();
++----------------+
+| USER()         |
++----------------+
+| root@localhost |
++----------------+
+1 row in set (0.00 sec)
+
+
+MariaDB [testdb]> select sysdate();
++---------------------+
+| sysdate()           |
++---------------------+
+| 2017-09-07 18:03:10 |
++---------------------+
+1 row in set (0.02 sec)
+
+MariaDB [testdb]> select current_date();
++----------------+
+| current_date() |
++----------------+
+| 2017-09-07     |
++----------------+
+1 row in set (0.00 sec)
+
+MariaDB [testdb]> select curdate();
++------------+
+| curdate()  |
++------------+
+| 2017-09-07 |
++------------+
+1 row in set (0.00 sec)
+
+MariaDB [testdb]> select now();
++---------------------+
+| now()               |
++---------------------+
+| 2017-09-07 18:04:14 |
++---------------------+
+1 row in set (0.00 sec)
+MariaDB [testdb]> select curtime();
++-----------+
+| curtime() |
++-----------+
+| 18:06:46  |
++-----------+
+1 row in set (0.00 sec)
+
+MariaDB [testdb]> select current_time();
++----------------+
+| current_time() |
++----------------+
+| 18:06:55       |
++----------------+
+1 row in set (0.00 sec)
+
+MariaDB [testdb]> select current_timestamp();
++---------------------+
+| current_timestamp() |
++---------------------+
+| 2017-09-07 18:07:05 |
++---------------------+
+1 row in set (0.00 sec)
+MariaDB [testdb]> select avg(sage) from student1;
++-----------+
+| avg(sage) |
++-----------+
+|   28.5000 |
++-----------+
+1 row in set (0.03 sec)
+MariaDB [testdb]> select * from student1;
++------+----------+---------+--------+------+---------+
+| sid  | snm      | surname | sgen   | sage | city    |
++------+----------+---------+--------+------+---------+
+|    1 | Aman     | NULL    | Male   |   25 | TORONTO |
+|    1 | Any      | NULL    | Female |   30 | TORONTO |
+|    3 | Karishma | NULL    | Female |   24 | NULL    |
+|    4 | Kanika   | NULL    | Female | NULL | NULL    |
+|    4 | Kanika   | NULL    | Female | NULL | NULL    |
+|    0 | 5        | NULL    | Male   |   35 | NULL    |
++------+----------+---------+--------+------+---------+
+MariaDB [testdb]> select sysdate(), avg(sage) from student1;
++---------------------+-----------+
+| sysdate()           | avg(sage) |
++---------------------+-----------+
+| 2017-09-07 18:11:49 |   28.5000 |
++---------------------+-----------+
+1 row in set (0.00 sec)
+
+MariaDB [testdb]> select now(), sid , snm from student1;
++---------------------+------+----------+
+| now()               | sid  | snm      |
++---------------------+------+----------+
+| 2017-09-07 18:12:37 |    1 | Aman     |
+| 2017-09-07 18:12:37 |    1 | Any      |
+| 2017-09-07 18:12:37 |    3 | Karishma |
+| 2017-09-07 18:12:37 |    4 | Kanika   |
+| 2017-09-07 18:12:37 |    4 | Kanika   |
+| 2017-09-07 18:12:37 |    0 | 5        |
++---------------------+------+----------+
+6 rows in set (0.00 sec)
+
+
+https://dev.mysql.com/doc/refman/5.7/en/data-types.html
+
+MariaDB [testdb]> select CONCAT(snm ,city) from student1;
++-------------------+
+| CONCAT(snm ,city) |
++-------------------+
+| AmanTORONTO       |
+| AnyTORONTO        |
+| NULL              |
+| NULL              |
+| NULL              |
+| NULL              |
++-------------------+
+6 rows in set (0.05 sec)
+
+MariaDB [testdb]> select CONCAT(snm , ' living in ' ,city) from student1;
++-----------------------------------+
+| CONCAT(snm , ' living in ' ,city) |
++-----------------------------------+
+| Aman living in TORONTO            |
+| Any living in TORONTO             |
+| NULL                              |
+| NULL                              |
+| NULL                              |
+| NULL                              |
++-----------------------------------+
+6 rows in set (0.00 sec)
+
+MariaDB [testdb]> update student1 set city='Brampton' where sid=(3,4,0);
+ERROR 1241 (21000): Operand should contain 1 column(s)
+MariaDB [testdb]> SELECT FORMAT(12332.123456, 4);
++-------------------------+
+| FORMAT(12332.123456, 4) |
++-------------------------+
+| 12,332.1235             |
++-------------------------+
+1 row in set (0.00 sec)
+
+MariaDB [testdb]> SELECT FORMAT(12332.123456, 4);
++-------------------------+
+| FORMAT(12332.123456, 4) |
++-------------------------+
+| 12,332.1235             |
++-------------------------+
+1 row in set (0.00 sec)
+
+MariaDB [testdb]> SELECT FORMAT(12332.123456, 2);
++-------------------------+
+| FORMAT(12332.123456, 2) |
++-------------------------+
+| 12,332.12               |
++-------------------------+
+1 row in set (0.00 sec)
+
+MariaDB [testdb]> SELECT FORMAT(12332.123456, 0);
++-------------------------+
+| FORMAT(12332.123456, 0) |
++-------------------------+
+| 12,332                  |
++-------------------------+
+1 row in set (0.00 sec)
+
+MariaDB [testdb]> SELECT FORMAT(12332.123456, 2,'de_DE');
++---------------------------------+
+| FORMAT(12332.123456, 2,'de_DE') |
++---------------------------------+
+| 12.332,12                       |
++---------------------------------+
+1 row in set (0.05 sec)
+
+MariaDB [testdb]> SELECT FORMAT(12332.123456, 2,'ar_IN');
++---------------------------------+
+| FORMAT(12332.123456, 2,'ar_IN') |
++---------------------------------+
+| 12,332.12                       |
++---------------------------------+
+1 row in set (0.00 sec)
+MariaDB [testdb]> show create table student1\G;
+*************************** 1. row ***************************
+       Table: student1
+Create Table: CREATE TABLE `student1` (
+  `sid` int(5) DEFAULT NULL,
+  `snm` varchar(25) DEFAULT NULL,
+  `surname` varchar(50) DEFAULT NULL,
+  `sgen` varchar(10) DEFAULT NULL,
+  `sage` int(3) DEFAULT NULL,
+  `city` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+1 row in set (0.00 sec)
+
+ERROR: No query specified
+
+CREATE TABLE Manufacturers 
+(  
+Code INTEGER,  Name VARCHAR(255) NOT NULL,  PRIMARY KEY (Code) 
+  );
+  
+  INSERT INTO Manufacturers(Code,Name) VALUES(1,'Sony');
+  INSERT INTO Manufacturers(Code,Name) VALUES(2,'Creative Labs');
+  INSERT INTO Manufacturers(Code,Name) VALUES(3,'Hewlett-Packard');
+  INSERT INTO Manufacturers(Code,Name) VALUES(4,'Iomega');
+  INSERT INTO Manufacturers(Code,Name) VALUES(5,'Fujitsu');
+  INSERT INTO Manufacturers(Code,Name) VALUES(6,'Winchester');
+  
+  MariaDB [testdb]> select * from manufacturers;
++------+-----------------+
+| Code | Name            |
++------+-----------------+
+|    1 | Sony            |
+|    2 | Creative Labs   |
+|    3 | Hewlett-Packard |
+|    4 | Iomega          |
+|    5 | Fujitsu         |
+|    6 | Winchester      |
++------+-----------------+
+6 rows in set (0.00 sec)
+
+CREATE TABLE Products 
+(  
+Code INTEGER, 
+ Name VARCHAR(255) NOT NULL , 
+ Price DECIMAL NOT NULL , 
+ Manufacturer INTEGER NOT NULL, 
+ PRIMARY KEY (Code),  
+ FOREIGN KEY (Manufacturer) REFERENCES Manufacturers(Code)
+ ) ;
+  
+Query OK, 0 rows affected (0.28 sec)
+
+ INSERT INTO Products(Code,Name,Price,Manufacturer)VALUES(1,'Hard drive',240,5);
+ INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(2,'Memory',120,6);
+ INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(3,'ZIP drive',150,4);
+ INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(4,'Floppy disk',5,6);
+ INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(5,'Monitor',240,1);
+ INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(6,'DVD drive',180,2);
+ INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(7,'CD drive',90,2);
+ INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(8,'Printer',270,3);
+ INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(9,'Toner cartridge',66,3);
+ INSERT INTO Products(Code,Name,Price,Manufacturer) VALUES(10,'DVD burner',180,2);
+
+
+MariaDB [testdb]> select * from Products;
++------+-----------------+-------+--------------+
+| Code | Name            | Price | Manufacturer |
++------+-----------------+-------+--------------+
+|    1 | Hard drive      |   240 |            5 |
+|    2 | Memory          |   120 |            6 |
+|    3 | ZIP drive       |   150 |            4 |
+|    4 | Floppy disk     |     5 |            6 |
+|    5 | Monitor         |   240 |            1 |
+|    6 | DVD drive       |   180 |            2 |
+|    7 | CD drive        |    90 |            2 |
+|    8 | Printer         |   270 |            3 |
+|    9 | Toner cartridge |    66 |            3 |
+|   10 | DVD burner      |   180 |            2 |
++------+-----------------+-------+--------------+
+10 rows in set (0.00 sec)
+
+MariaDB [testdb]> desc manufacturers
+    -> ;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| Code  | int(3)      | NO   | PRI | NULL    |       |
+| Name  | varchar(50) | NO   |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+MariaDB [testdb]> desc products;
++--------------+---------------+------+-----+---------+-------+
+| Field        | Type          | Null | Key | Default | Extra |
++--------------+---------------+------+-----+---------+-------+
+| Code         | int(11)       | NO   | PRI | NULL    |       |
+| Name         | varchar(255)  | NO   |     | NULL    |       |
+| Price        | decimal(10,0) | NO   |     | NULL    |       |
+| Manufacturer | int(11)       | NO   | MUL | NULL    |       |
++--------------+---------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+
+
+MariaDB [testdb]> SELECT name from products where price <= 200;
++-----------------+
+| name            |
++-----------------+
+| Memory          |
+| ZIP drive       |
+| Floppy disk     |
+| DVD drive       |
+| CD drive        |
+| Toner cartridge |
+| DVD burner      |
++-----------------+
+7 rows in set (0.00 sec)
+
+
+MariaDB [testdb]> select * from products where price between 60 and 120;
++------+-----------------+-------+--------------+
+| Code | Name            | Price | Manufacturer |
++------+-----------------+-------+--------------+
+|    2 | Memory          |   120 |            6 |
+|    7 | CD drive        |    90 |            2 |
+|    9 | Toner cartridge |    66 |            3 |
++------+-----------------+-------+--------------+
+3 rows in set (0.00 sec)
+
+MariaDB [testdb]> SELECT name, (price*100) from products;
++-----------------+-------------+
+| name            | (price*100) |
++-----------------+-------------+
+| Hard drive      |       24000 |
+| Memory          |       12000 |
+| ZIP drive       |       15000 |
+| Floppy disk     |         500 |
+| Monitor         |       24000 |
+| DVD drive       |       18000 |
+| CD drive        |        9000 |
+| Printer         |       27000 |
+| Toner cartridge |        6600 |
+| DVD burner      |       18000 |
++-----------------+-------------+
+10 rows in set (0.00 sec)
+
+MariaDB [testdb]> SELECT name, CONCAT('$' , price), CONCAT (price*100, 'cents ') as cents from products;
++-----------------+---------------------+-------------+
+| name            | CONCAT('$' , price) | cents       |
++-----------------+---------------------+-------------+
+| Hard drive      | $240                | 24000cents  |
+| Memory          | $120                | 12000cents  |
+| ZIP drive       | $150                | 15000cents  |
+| Floppy disk     | $5                  | 500cents    |
+| Monitor         | $240                | 24000cents  |
+| DVD drive       | $180                | 18000cents  |
+| CD drive        | $90                 | 9000cents   |
+| Printer         | $270                | 27000cents  |
+| Toner cartridge | $66                 | 6600cents   |
+| DVD burner      | $180                | 18000cents  |
++-----------------+---------------------+-------------+
+10 rows in set (0.00 sec)
+MariaDB [testdb]> select count(price) from products;
++--------------+
+| count(price) |
++--------------+
+|           10 |
++--------------+
+1 row in set (0.00 sec)
+MariaDB [testdb]> select max(price) from products;
++------------+
+| max(price) |
++------------+
+|        270 |
++------------+
+1 row in set (0.00 sec)
+
+MariaDB [testdb]> select min(price) from products;
++------------+
+| min(price) |
++------------+
+|          5 |
++------------+
+1 row in set (0.00 sec)
+
+MariaDB [testdb]> select price from products where code='2';
++-------+
+| price |
++-------+
+|   120 |
++-------+
+1 row in set (0.00 sec)
+
+MariaDB [testdb]> select count(price) from products;
++--------------+
+| count(price) |
++--------------+
+|           10 |
++--------------+
+1 row in set (0.00 sec)
+
+MariaDB [testdb]> select avg(price) from products where manufacturer =2;
++------------+
+| avg(price) |
++------------+
+|   150.0000 |
++------------+
+1 row in set (0.05 sec)
+
+MariaDB [testdb]> select count(price) from products where price >=150;
++--------------+
+| count(price) |
++--------------+
+|            6 |
++--------------+
+1 row in set (0.00 sec)
+
+MariaDB [testdb]> select name from products ORDER BY name;
++-----------------+
+| name            |
++-----------------+
+| CD drive        |
+| DVD burner      |
+| DVD drive       |
+| Floppy disk     |
+| Hard drive      |
+| Memory          |
+| Monitor         |
+| Printer         |
+| Toner cartridge |
+| ZIP drive       |
++-----------------+
+10 rows in set (0.09 sec)
+MariaDB [testdb]> select name from products ORDER BY name desc;
++-----------------+
+| name            |
++-----------------+
+| ZIP drive       |
+| Toner cartridge |
+| Printer         |
+| Monitor         |
+| Memory          |
+| Hard drive      |
+| Floppy disk     |
+| DVD drive       |
+| DVD burner      |
+| CD drive        |
++-----------------+
+MariaDB [testdb]> select * from products ORDER BY name, manufacturer desc;
++------+-----------------+-------+--------------+
+| Code | Name            | Price | Manufacturer |
++------+-----------------+-------+--------------+
+|    7 | CD drive        |    90 |            2 |
+|   10 | DVD burner      |   180 |            2 |
+|    6 | DVD drive       |   180 |            2 |
+|    4 | Floppy disk     |     5 |            6 |
+|    1 | Hard drive      |   240 |            5 |
+|    2 | Memory          |   120 |            6 |
+|    5 | Monitor         |   240 |            1 |
+|    8 | Printer         |   270 |            3 |
+|    9 | Toner cartridge |    66 |            3 |
+|    3 | ZIP drive       |   150 |            4 |
++------+-----------------+-------+--------------+
+10 rows in set (0.00 sec)
+
+MariaDB [testdb]> select * from products ORDER BY  manufacturer desc, name;
++------+-----------------+-------+--------------+
+| Code | Name            | Price | Manufacturer |
++------+-----------------+-------+--------------+
+|    4 | Floppy disk     |     5 |            6 |
+|    2 | Memory          |   120 |            6 |
+|    1 | Hard drive      |   240 |            5 |
+|    3 | ZIP drive       |   150 |            4 |
+|    8 | Printer         |   270 |            3 |
+|    9 | Toner cartridge |    66 |            3 |
+|    7 | CD drive        |    90 |            2 |
+|   10 | DVD burner      |   180 |            2 |
+|    6 | DVD drive       |   180 |            2 |
+|    5 | Monitor         |   240 |            1 |
++------+-----------------+-------+--------------+
+10 rows in set (0.00 sec)
+
+MariaDB [testdb]> select * from products ORDER BY  manufacturer desc, name desc;
++------+-----------------+-------+--------------+
+| Code | Name            | Price | Manufacturer |
++------+-----------------+-------+--------------+
+|    2 | Memory          |   120 |            6 |
+|    4 | Floppy disk     |     5 |            6 |
+|    1 | Hard drive      |   240 |            5 |
+|    3 | ZIP drive       |   150 |            4 |
+|    9 | Toner cartridge |    66 |            3 |
+|    8 | Printer         |   270 |            3 |
+|    6 | DVD drive       |   180 |            2 |
+|   10 | DVD burner      |   180 |            2 |
+|    7 | CD drive        |    90 |            2 |
+|    5 | Monitor         |   240 |            1 |
++------+-----------------+-------+--------------+
+10 rows in set (0.00 sec)
+MariaDB [testdb]> select name from products where name like '%drive%';
++------------+
+| name       |
++------------+
+| Hard drive |
+| ZIP drive  |
+| DVD drive  |
+| CD drive   |
++------------+
+4 rows in set (0.00 sec)
+MariaDB [testdb]> select name from products where name like '%drive%' order by name desc;
++------------+
+| name       |
++------------+
+| ZIP drive  |
+| Hard drive |
+| DVD drive  |
+| CD drive   |
++------------+
+MariaDB [testdb]> update products set price ='250' where name='Hard drive';
+Query OK, 1 row affected (0.06 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [testdb]> select * from products where name='hard drive';
++------+------------+-------+--------------+
+| Code | Name       | Price | Manufacturer |
++------+------------+-------+--------------+
+|    1 | Hard drive |   250 |            5 |
++------+------------+-------+--------------+
+1 row in set (0.00 sec)
+
+
+
+
+
+MariaDB [testdb]> update products set manufacturer=7 where code=1;
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`testdb`.`products`, CONSTRAINT `products_ibfk_1` FOREIGN KEY (`Manufacturer`) REFERENCES `manufacturers` (`Code`))
+MariaDB [testdb]> select * from manufacturers;
++------+-----------------+
+| Code | Name            |
++------+-----------------+
+|    1 | Sony            |
+|    2 | Creative Labs   |
+|    3 | Hewlett-Packard |
+|    4 | Iomega          |
+|    5 | Fujitsu         |
+|    6 | Winchester      |
++------+-----------------+
+6 rows in set (0.00 sec)
+
+MariaDB [testdb]> INSERT INTO Products VALUES (11,'USB DRIVE' , 230,Null);
+ERROR 1048 (23000): Column 'Manufacturer' cannot be null
+MariaDB [testdb]> INSERT INTO Products VALUES (11,'USB DRIVE' , 230,);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ')' at line 1
+MariaDB [testdb]> INSERT INTO Products VALUES (11,'USB DRIVE' , 230);
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+MariaDB [testdb]> show create table manufacturers\g;
++---------------+-------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table         | Create Table                                                                                                                                          |
++---------------+-------------------------------------------------------------------------------------------------------------------------------------------------------+
+| manufacturers | CREATE TABLE `manufacturers` (
+  `Code` int(3) NOT NULL,
+  `Name` varchar(50) NOT NULL,
+  PRIMARY KEY (`Code`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 |
++---------------+-------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.02 sec)
+
+ERROR: No query specified
+
+MariaDB [testdb]> show create table products\g;
++----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table    | Create Table                                                                                                                                                                                                                                                                                                                                                    |
++----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| products | CREATE TABLE `products` (
+  `Code` int(11) NOT NULL,
+  `Name` varchar(255) NOT NULL,
+  `Price` decimal(10,0) NOT NULL,
+  `Manufacturer` int(11) NOT NULL,
+  PRIMARY KEY (`Code`),
+  KEY `Manufacturer` (`Manufacturer`),
+  CONSTRAINT `products_ibfk_1` FOREIGN KEY (`Manufacturer`) REFERENCES `manufacturers` (`Code`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 |
++----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+ERROR: No query specified
+
+MariaDB [testdb]> delete from manufacturers where code=1;         
+                                                                        // 
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`testdb`.`products`, CONSTRAINT `products_ibfk_1` FOREIGN KEY (`Manufacturer`) REFERENCES `manufacturers` (`Code`))
+
+
+MariaDB [testdb]> select * from manufacturers;
++------+-----------------+
+| Code | Name            |
++------+-----------------+
+|    1 | Sony            |
+|    2 | Creative Labs   |
+|    3 | Hewlett-Packard |
+|    4 | Iomega          |
+|    5 | Fujitsu         |
+|    6 | Winchester      |
+|    7 | Acer            |
++------+-----------------+
+7 rows in set (0.00 sec)
+
+MariaDB [testdb]> delete from manufacturers where code=7;
+Query OK, 1 row affected (0.06 sec)
+
+MariaDB [testdb]> select * from manufacturers;
++------+-----------------+
+| Code | Name            |
++------+-----------------+
+|    1 | Sony            |
+|    2 | Creative Labs   |
+|    3 | Hewlett-Packard |
+|    4 | Iomega          |
+|    5 | Fujitsu         |
+|    6 | Winchester      |
++------+-----------------+
+6 rows in set (0.00 sec)                                         // because 7 has no other record being reffered to it in child table so it was deleted.
+
+
+MariaDB [testdb]> select* from manufacturers;
++------+-----------------+
+| Code | Name            |
++------+-----------------+
+|    1 | Sony            |
+|    2 | Creative Labs   |
+|    3 | Hewlett-Packard |
+|    4 | Iomega          |
+|    5 | Fujitsu         |
+|    6 | Winchester      |
+|    7 | Acer            |
+|    8 | Dell            |
+|    9 | FIGO            |
+|   10 | WEM             |
++------+-----------------+
+10 rows in set (0.00 sec)
+
+MariaDB [testdb]> select * from products;
++------+-----------------+-------+--------------+
+| Code | Name            | Price | Manufacturer |
++------+-----------------+-------+--------------+
+|    1 | Hard drive      |   500 |            5 |
+|    2 | Memory          |   120 |            6 |
+|    3 | ZIP drive       |   150 |            4 |
+|    4 | Floppy disk     |     5 |            6 |
+|    5 | Monitor         |   240 |            1 |
+|    6 | DVD drive       |   180 |            2 |
+|    7 | CD drive        |    90 |            2 |
+|    8 | Printer         |   270 |            3 |
+|    9 | Toner cartridge |    66 |            3 |
+|   10 | DVD burner      |   180 |            2 |
+|   11 | USB             |   230 |            7 |
+|   12 | Cable           |   200 |            8 |
+|   13 | Mouse           |   120 |            9 |
++------+-----------------+-------+--------------+
+13 rows in set (0.00 sec)
+
+
