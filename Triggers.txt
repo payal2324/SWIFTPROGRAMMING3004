@@ -1,0 +1,236 @@
+MariaDB [testdb]> Create TABLE Audit   (  Op_id INT AUTO_INCREMENT PRIMARY KEY ,   TableNAme Varchar(50)  NOT NULL , Op_Name Varchar(10) NOT NULL , Op_Date DATETIME DEFAULT CURRENT_TIMESTAMP   );
+Query OK, 0 rows affected (0.50 sec)
+
+MariaDB [testdb]> desc audit;
++-----------+-------------+------+-----+-------------------+----------------+
+| Field     | Type        | Null | Key | Default           | Extra          |
++-----------+-------------+------+-----+-------------------+----------------+
+| Op_id     | int(11)     | NO   | PRI | NULL              | auto_increment |
+| TableNAme | varchar(50) | NO   |     | NULL              |                |
+| Op_Name   | varchar(10) | NO   |     | NULL              |                |
+| Op_Date   | datetime    | YES  |     | CURRENT_TIMESTAMP |                |
++-----------+-------------+------+-----+-------------------+----------------+
+
+
+MariaDB [testdb]> INSERT INTO AUDIT (TABLENAME,OP_NAME) VALUES ('PRODUCTS', 'INSERT');
+Query OK, 1 row affected (0.08 sec)
+
+MariaDB [testdb]> select * from audit;
++-------+-----------+---------+---------------------+
+| Op_id | TableNAme | Op_Name | Op_Date             |
++-------+-----------+---------+---------------------+
+|     1 | PRODUCTS  | INSERT  | 2017-09-15 19:05:03 |
++-------+-----------+---------+---------------------+
+1 row in set (0.00 sec)
+
+
+
+delimiter //
+
+CREATE TRIGGER INSERT_Check_Products AFTER INSERT ON Products
+for each row 
+BEGIN 
+INSERT INTO Audit(TABLENAME,OP_NAME) VALUES ('PRODUCTS', 'INSERT');
+END ; // 
+delimiter;
+
+MariaDB [testdb]> Insert Into products values(16,'yehwoh',160,5);
+Query OK, 1 row affected (0.08 sec)
+
+
+
+MariaDB [testdb]> select * from audit;
++-------+-----------+---------+---------------------+
+| Op_id | TableNAme | Op_Name | Op_Date             |
++-------+-----------+---------+---------------------+
+|     1 | PRODUCTS  | INSERT  | 2017-09-15 19:05:03 |
+|     2 | PRODUCTS  | INSERT  | 2017-09-15 19:23:37 |
++-------+-----------+---------+---------------------+
+2 rows in set (0.00 sec)
+
+
+MariaDB [testdb]> select * from products;
++------+-----------------+-------+--------------+
+| Code | Name            | Price | Manufacturer |
++------+-----------------+-------+--------------+
+|    0 | iphone 8 plus   |     0 |         NULL |
+|    1 | HARD DRIVE      |   240 |         NULL |
+|    2 | Memory          |   120 |            6 |
+|    3 | ZIP drive       |   150 |            4 |
+|    4 | Floppy disk     |     5 |            6 |
+|    5 | Monitor         |   240 |            1 |
+|    6 | DVD drive       |   180 |            2 |
+|    7 | CD drive        |    90 |            2 |
+|    8 | Printer         |   270 |            3 |
+|    9 | Toner cartridge |    66 |            3 |
+|   10 | DVD burner      |   180 |            2 |
+|   11 | USB DRIVE       |   100 |         NULL |
+|   13 | iPhone x        |     0 |         NULL |
+|   14 | iPhone 8        |     0 |         NULL |
+|   15 | iphone 9 plus   |     0 |            6 |
+|   16 | yehwoh          |   160 |            5 |
++------+-----------------+-------+--------------+
+16 rows in set (0.00 sec)
+
+
+
+delimiter //
+
+CREATE TRIGGER Update_Check_Products AFTER Update ON Products
+for each row 
+BEGIN 
+INSERT INTO Audit(TABLENAME,OP_NAME) VALUES ('PRODUCTS', 'Update');
+END ; // 
+delimiter;
+
+
+
+
+
+MariaDB [testdb]> Update products set Name='iphone' where name='yehwoh';
+Query OK, 1 row affected (0.05 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [testdb]> select * from audit;
++-------+-----------+---------+---------------------+
+| Op_id | TableNAme | Op_Name | Op_Date             |
++-------+-----------+---------+---------------------+
+|     1 | PRODUCTS  | INSERT  | 2017-09-15 19:05:03 |
+|     2 | PRODUCTS  | INSERT  | 2017-09-15 19:23:37 |
+|     3 | PRODUCTS  | Update  | 2017-09-15 19:26:31 |
++-------+-----------+---------+---------------------+
+3 rows in set (0.00 sec)
+
+
+MariaDB [testdb]> select * from products;
++------+-----------------+-------+--------------+
+| Code | Name            | Price | Manufacturer |
++------+-----------------+-------+--------------+
+|    0 | iphone 8 plus   |     0 |         NULL |
+|    1 | HARD DRIVE      |   240 |         NULL |
+|    2 | Memory          |   120 |            6 |
+|    3 | ZIP drive       |   150 |            4 |
+|    4 | Floppy disk     |     5 |            6 |
+|    5 | Monitor         |   240 |            1 |
+|    6 | DVD drive       |   180 |            2 |
+|    7 | CD drive        |    90 |            2 |
+|    8 | Printer         |   270 |            3 |
+|    9 | Toner cartridge |    66 |            3 |
+|   10 | DVD burner      |   180 |            2 |
+|   11 | USB DRIVE       |   100 |         NULL |
+|   13 | iPhone x        |     0 |         NULL |
+|   14 | iPhone 8        |     0 |         NULL |
+|   15 | iphone 9 plus   |     0 |            6 |
+|   16 | iphone          |   160 |            5 |
++------+-----------------+-------+--------------+
+16 rows in set (0.00 sec)
+
+
+delimiter //
+
+CREATE TRIGGER Delete_Check_Products AFTER DELETE ON Products
+for each row 
+BEGIN 
+INSERT INTO Audit(TABLENAME,OP_NAME) VALUES('PRODUCTS','Delete');
+END ; // 
+delimiter;
+
+MariaDB [testDb]> delete from products where name='iphone';
+Query OK, 1 row affected (0.05 sec)
+
+MariaDB [testDb]> select * from products;
++------+-----------------+-------+--------------+
+| Code | Name            | Price | Manufacturer |
++------+-----------------+-------+--------------+
+|    0 | iphone 8 plus   |     0 |         NULL |
+|    1 | HARD DRIVE      |   240 |         NULL |
+|    2 | Memory          |   120 |            6 |
+|    3 | ZIP drive       |   150 |            4 |
+|    4 | Floppy disk     |     5 |            6 |
+|    5 | Monitor         |   240 |            1 |
+|    6 | DVD drive       |   180 |            2 |
+|    7 | CD drive        |    90 |            2 |
+|    8 | Printer         |   270 |            3 |
+|    9 | Toner cartridge |    66 |            3 |
+|   10 | DVD burner      |   180 |            2 |
+|   11 | USB DRIVE       |   100 |         NULL |
+|   13 | iPhone x        |     0 |         NULL |
+|   14 | iPhone 8        |     0 |         NULL |
+|   15 | iphone 9 plus   |     0 |            6 |
++------+-----------------+-------+--------------+
+15 rows in set (0.00 sec)
+
+MariaDB [testDb]> select * from audit;
++-------+-----------+---------+---------------------+
+| Op_id | TableNAme | Op_Name | Op_Date             |
++-------+-----------+---------+---------------------+
+|     1 | PRODUCTS  | INSERT  | 2017-09-15 19:05:03 |
+|     2 | PRODUCTS  | INSERT  | 2017-09-15 19:23:37 |
+|     3 | PRODUCTS  | Update  | 2017-09-15 19:26:31 |
+|     4 | PRODUCTS  | Delete  | 2017-09-15 19:33:20 |
++-------+-----------+---------+---------------------+
+4 rows in set (0.00 sec)
+
+
+
+MariaDB [testDb]> Alter TABLE Audit add column USER Varchar(30)  after Tablename ;
+Query OK, 0 rows affected (0.29 sec)
+
+
+MariaDB [testDb]> select * from audit;
++-------+-----------+------+---------+---------------------+
+| Op_id | TableNAme | USER | Op_Name | Op_Date             |
++-------+-----------+------+---------+---------------------+
+|     1 | PRODUCTS  | NULL | INSERT  | 2017-09-15 19:05:03 |
+|     2 | PRODUCTS  | NULL | INSERT  | 2017-09-15 19:23:37 |
+|     3 | PRODUCTS  | NULL | Update  | 2017-09-15 19:26:31 |
+|     4 | PRODUCTS  | NULL | Delete  | 2017-09-15 19:33:20 |
++-------+-----------+------+---------+---------------------+
+4 rows in set (0.00 sec)
+
+
+
+delimiter //
+
+CREATE OR REPLACE TRIGGER INSERT_Check_Products AFTER INSERT ON Products
+for each row 
+BEGIN 
+INSERT INTO Audit(TABLENAME,OP_NAME,USER) VALUES ('PRODUCTS', 'INSERT',Current_user);
+END ; // 
+delimiter;
+MariaDB [testdb]> insert into products Values(17,'yipeeh',560,5);
+Query OK, 1 row affected (0.07 sec)
+
+MariaDB [testdb]> select * from audit;
++-------+-----------+----------------+---------+---------------------+
+| Op_id | TableNAme | USER           | Op_Name | Op_Date             |
++-------+-----------+----------------+---------+---------------------+
+|     1 | PRODUCTS  | NULL           | INSERT  | 2017-09-15 19:05:03 |
+|     2 | PRODUCTS  | NULL           | INSERT  | 2017-09-15 19:23:37 |
+|     3 | PRODUCTS  | NULL           | Update  | 2017-09-15 19:26:31 |
+|     4 | PRODUCTS  | NULL           | Delete  | 2017-09-15 19:33:20 |
+|     5 | PRODUCTS  | root@localhost | INSERT  | 2017-09-15 20:04:17 |
++-------+-----------+----------------+---------+---------------------+
+5 rows in set (0.00 sec)
+
+MariaDB [testdb]> select * from products;
++------+-----------------+-------+--------------+
+| Code | Name            | Price | Manufacturer |
++------+-----------------+-------+--------------+
+|    0 | iphone 8 plus   |     0 |         NULL |
+|    1 | HARD DRIVE      |   240 |         NULL |
+|    2 | Memory          |   120 |            6 |
+|    3 | ZIP drive       |   150 |            4 |
+|    4 | Floppy disk     |     5 |            6 |
+|    5 | Monitor         |   240 |            1 |
+|    6 | DVD drive       |   180 |            2 |
+|    7 | CD drive        |    90 |            2 |
+|    8 | Printer         |   270 |            3 |
+|    9 | Toner cartridge |    66 |            3 |
+|   10 | DVD burner      |   180 |            2 |
+|   11 | USB DRIVE       |   100 |         NULL |
+|   13 | iPhone x        |     0 |         NULL |
+|   14 | iPhone 8        |     0 |         NULL |
+|   15 | iphone 9 plus   |     0 |            6 |
+|   17 | yipeeh          |   560 |            5 |
++------+-----------------+-------+--------------+
