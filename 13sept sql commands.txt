@@ -1,0 +1,158 @@
+MariaDB [(none)]> use testdb;
+Database changed
+MariaDB [testdb]> show tables;
++------------------+
+| Tables_in_testdb |
++------------------+
+| info             |
+| man              |
+| manufacturers    |
+| products         |
+| stu              |
+| student          |
++------------------+
+6 rows in set (0.00 sec)
+
+MariaDB [testdb]> select * from products;
++------+-----------------+-------+--------------+
+| Code | Name            | Price | Manufacturer |
++------+-----------------+-------+--------------+
+|    1 | Hard drive      |   240 |            5 |
+|    2 | Memory          |   120 |            6 |
+|    3 | ZIP drive       |   150 |            4 |
+|    4 | Floppy disk     |     5 |            6 |
+|    6 | DVD drive       |   180 |            2 |
+|    7 | CD drive        |    90 |            2 |
+|    8 | Printer         |   270 |            3 |
+|    9 | Toner cartridge |    66 |            3 |
+|   10 | DVD burner      |   180 |            2 |
++------+-----------------+-------+--------------+
+9 rows in set (0.07 sec)
+
+MariaDB [testdb]> select * from manufacturers;
++------+-----------------+
+| Code | Name            |
++------+-----------------+
+|    1 | Sony            |
+|    2 | Creative Labs   |
+|    3 | Hewlett-Packard |
+|    4 | Iomega          |
+|    5 | Fujitsu         |
+|    6 | Winchester      |
++------+-----------------+
+6 rows in set (0.08 sec)
+
+MariaDB [testdb]> -- 1.10 Select all the data from the products, including all the data for each product's manufacturer.
+MariaDB [testdb]> select p.*, m.* from products as p JOin manufacturers as m on p.manufacturer = m.code;
++------+-----------------+-------+--------------+------+-----------------+
+| Code | Name            | Price | Manufacturer | Code | Name            |
++------+-----------------+-------+--------------+------+-----------------+
+|    1 | Hard drive      |   240 |            5 |    5 | Fujitsu         |
+|    2 | Memory          |   120 |            6 |    6 | Winchester      |
+|    3 | ZIP drive       |   150 |            4 |    4 | Iomega          |
+|    4 | Floppy disk     |     5 |            6 |    6 | Winchester      |
+|    6 | DVD drive       |   180 |            2 |    2 | Creative Labs   |
+|    7 | CD drive        |    90 |            2 |    2 | Creative Labs   |
+|    8 | Printer         |   270 |            3 |    3 | Hewlett-Packard |
+|    9 | Toner cartridge |    66 |            3 |    3 | Hewlett-Packard |
+|   10 | DVD burner      |   180 |            2 |    2 | Creative Labs   |
++------+-----------------+-------+--------------+------+-----------------+
+9 rows in set (0.00 sec)
+
+MariaDB [testdb]> select p.*, m.* from products as p JOin manufacturers as m on m.code= p.manufacturer;
++------+-----------------+-------+--------------+------+-----------------+
+| Code | Name            | Price | Manufacturer | Code | Name            |
++------+-----------------+-------+--------------+------+-----------------+
+|    1 | Hard drive      |   240 |            5 |    5 | Fujitsu         |
+|    2 | Memory          |   120 |            6 |    6 | Winchester      |
+|    3 | ZIP drive       |   150 |            4 |    4 | Iomega          |
+|    4 | Floppy disk     |     5 |            6 |    6 | Winchester      |
+|    6 | DVD drive       |   180 |            2 |    2 | Creative Labs   |
+|    7 | CD drive        |    90 |            2 |    2 | Creative Labs   |
+|    8 | Printer         |   270 |            3 |    3 | Hewlett-Packard |
+|    9 | Toner cartridge |    66 |            3 |    3 | Hewlett-Packard |
+|   10 | DVD burner      |   180 |            2 |    2 | Creative Labs   |
++------+-----------------+-------+--------------+------+-----------------+
+9 rows in set (0.00 sec)
+
+
+MariaDB [testdb]> -- 1.11 Select the product name, price, and manufacturer name of all the products.
+MariaDB [testdb]> select p.name,p.price,m.name from products p join manufacturers m on p.manufacturer =m.code;
++-----------------+-------+-----------------+
+| name            | price | name            |
++-----------------+-------+-----------------+
+| Hard drive      |   240 | Fujitsu         |
+| Memory          |   120 | Winchester      |
+| ZIP drive       |   150 | Iomega          |
+| Floppy disk     |     5 | Winchester      |
+| DVD drive       |   180 | Creative Labs   |
+| CD drive        |    90 | Creative Labs   |
+| Printer         |   270 | Hewlett-Packard |
+| Toner cartridge |    66 | Hewlett-Packard |
+| DVD burner      |   180 | Creative Labs   |
++-----------------+-------+-----------------+
+9 rows in set (0.00 sec)
+
+
+
+MariaDB [testdb]> -- 1.12 Select the average price of each manufacturer's products, showing only the manufacturer's code.
+
+MariaDB [testdb]> select m.code,avg(p.price) from manufacturers m join products p on p.manufacturer =m.code group by manufacturer;
++------+--------------+
+| code | avg(p.price) |
++------+--------------+
+|    2 |     150.0000 |
+|    3 |     168.0000 |
+|    4 |     150.0000 |
+|    5 |     240.0000 |
+|    6 |      62.5000 |
++------+--------------+
+5 rows in set (0.00 sec)
+
+
+MariaDB [testdb]> -- 1.13 Select the average price of each manufacturer's products, showing the manufacturer's name.
+MariaDB [testdb]> select m.name,avg(p.price) from manufacturers m join products p on p.manufacturer =m.code group by manufacturer;
++-----------------+--------------+
+| name            | avg(p.price) |
++-----------------+--------------+
+| Creative Labs   |     150.0000 |
+| Hewlett-Packard |     168.0000 |
+| Iomega          |     150.0000 |
+| Fujitsu         |     240.0000 |
+| Winchester      |      62.5000 |
++-----------------+--------------+
+5 rows in set (0.00 sec)
+
+MariaDB [testdb]> -- 1.14 Select the names of manufacturer whose products have an average price larger than  $150.
+MariaDB [testdb]> select m.name from manufacturers m join products p where p.manufacturer=m.code group by p.manufacturer having avg(p.price) >150;
++-----------------+
+| name            |
++-----------------+
+| Hewlett-Packard |
+| Fujitsu         |
++-----------------+
+2 rows in set (0.00 sec)
+
+
+MariaDB [testdb]> -- 1.15 Select the name and price of the cheapest product.
+MariaDB [testdb]> select p.name, p.price from products p order by p.price asc limit 1;
++-------------+-------+
+| name        | price |
++-------------+-------+
+| Floppy disk |     5 |
++-------------+-------+
+1 row in set (0.00 sec)
+
+
+MariaDB [testdb]> -- 1.16 Select the name of each manufacturer along with the name and price of its most expensive product.
+MariaDB [testdb]> select m.name,p.name,max(p.price) as 'most expensive' from products p join manufacturers m where p.manufacturer=m.code group by p.manufacturer;
++-----------------+------------+----------------+
+| name            | name       | most expensive |
++-----------------+------------+----------------+
+| Creative Labs   | DVD drive  |            180 |
+| Hewlett-Packard | Printer    |            270 |
+| Iomega          | ZIP drive  |            150 |
+| Fujitsu         | Hard drive |            240 |
+| Winchester      | Memory     |            120 |
++-----------------+------------+----------------+
+5 rows in set (0.00 sec)
