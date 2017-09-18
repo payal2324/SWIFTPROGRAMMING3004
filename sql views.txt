@@ -1,0 +1,355 @@
+Guidelines for a View in mysql:
+
+
+INSERTION 
+  
+  Primary key and not null columns is manadatory
+
+
+UPDATATION AND DELETION
+ 
+   Records will be affection only if that record exsist in that view
+  
+  Cannot Modify the physical structure of the tables.
+
+MariaDB [myTestDB]> SELECT * FROM products;
++------+-----------------+-------+--------------+
+| Code | Name            | Price | Manufacturer |
++------+-----------------+-------+--------------+
+|    1 | Hard drive      |   240 |            5 |
+|    2 | Memory          |   120 |            6 |
+|    3 | ZIP drive       |   150 |            4 |
+|    4 | Floppy disk     |     5 |            6 |
+|    5 | Monitor         |   240 |            1 |
+|    6 | DVD drive       |   180 |            2 |
+|    7 | CD drive        |    90 |            2 |
+|    8 | Printer         |   270 |            3 |
+|    9 | Toner cartridge |    66 |            3 |
+|   10 | DVD burner      |   180 |            2 |
+|   11 | USB Driver      |    40 |         NULL |
+|   12 | USB Driver      |    54 |         NULL |
++------+-----------------+-------+--------------+
+12 rows in set (0.03 sec)
+
+
+MariaDB [myTestDB]> CREATE VIEW v1 as SELECT Code,Name from products;
+Query OK, 0 rows affected (0.08 sec)
+
+MariaDB [myTestDB]> SELECT * from v1;
++------+-----------------+
+| Code | Name            |
++------+-----------------+
+|    1 | Hard drive      |
+|    2 | Memory          |
+|    3 | ZIP drive       |
+|    4 | Floppy disk     |
+|    5 | Monitor         |
+|    6 | DVD drive       |
+|    7 | CD drive        |
+|    8 | Printer         |
+|    9 | Toner cartridge |
+|   10 | DVD burner      |
+|   11 | USB Driver      |
+|   12 | USB Driver      |
++------+-----------------+
+12 rows in set (0.03 sec)
+
+
+MariaDB [myTestDB]> show tables;
++--------------------+
+| Tables_in_mytestdb |
++--------------------+
+| locations          |
+| manufacturers      |
+| pet                |
+| pieces             |
+| products           |
+| providers          |
+| provides           |
+| student            |
+| t1                 |
+| v1                 |
++--------------------+
+10 rows in set (0.00 sec)
+
+MariaDB [myTestDB]> desc v1;
++-------+--------------+------+-----+---------+-------+
+| Field | Type         | Null | Key | Default | Extra |
++-------+--------------+------+-----+---------+-------+
+| Code  | int(11)      | NO   |     | NULL    |       |
+| Name  | varchar(255) | NO   |     | NULL    |       |
++-------+--------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+MariaDB [myTestDB]> CREATE VIEW v2 as SELECT Code,Name FROM products WHERE Name like '%drive%';
+Query OK, 0 rows affected (0.03 sec)
+
+MariaDB [myTestDB]> SELECT * FROM v2;
++------+------------+
+| Code | Name       |
++------+------------+
+|    1 | Hard drive |
+|    3 | ZIP drive  |
+|    6 | DVD drive  |
+|    7 | CD drive   |
+|   11 | USB Driver |
+|   12 | USB Driver |
++------+------------+
+6 rows in set (0.00 sec)
+
+MariaDB [myTestDB]> INSERT INTO v1 VALUES(13,'iPhone X');
+Query OK, 1 row affected, 1 warning (0.08 sec)
+
+MariaDB [myTestDB]> SELECT * FROM products;
++------+-----------------+-------+--------------+
+| Code | Name            | Price | Manufacturer |
++------+-----------------+-------+--------------+
+|    1 | Hard drive      |   240 |            5 |
+|    2 | Memory          |   120 |            6 |
+|    3 | ZIP drive       |   150 |            4 |
+|    4 | Floppy disk     |     5 |            6 |
+|    5 | Monitor         |   240 |            1 |
+|    6 | DVD drive       |   180 |            2 |
+|    7 | CD drive        |    90 |            2 |
+|    8 | Printer         |   270 |            3 |
+|    9 | Toner cartridge |    66 |            3 |
+|   10 | DVD burner      |   180 |            2 |
+|   11 | USB Driver      |    40 |         NULL |
+|   12 | USB Driver      |    54 |         NULL |
+|   13 | iPhone X        |     0 |         NULL |
++------+-----------------+-------+--------------+
+13 rows in set (0.00 sec)
+
+MariaDB [myTestDB]> INSERT INTO v2 VALUES(14,'iPhone 8');
+Query OK, 1 row affected, 1 warning (0.08 sec)
+
+MariaDB [myTestDB]> SELECT * FROM products;
++------+-----------------+-------+--------------+
+| Code | Name            | Price | Manufacturer |
++------+-----------------+-------+--------------+
+|    1 | Hard drive      |   240 |            5 |
+|    2 | Memory          |   120 |            6 |
+|    3 | ZIP drive       |   150 |            4 |
+|    4 | Floppy disk     |     5 |            6 |
+|    5 | Monitor         |   240 |            1 |
+|    6 | DVD drive       |   180 |            2 |
+|    7 | CD drive        |    90 |            2 |
+|    8 | Printer         |   270 |            3 |
+|    9 | Toner cartridge |    66 |            3 |
+|   10 | DVD burner      |   180 |            2 |
+|   11 | USB Driver      |    40 |         NULL |
+|   12 | USB Driver      |    54 |         NULL |
+|   13 | iPhone X        |     0 |         NULL |
+|   14 | iPhone 8        |     0 |         NULL |
++------+-----------------+-------+--------------+
+14 rows in set (0.02 sec)
+
+MariaDB [myTestDB]> CREATE View v3 as SELECT name FROM products;
+Query OK, 0 rows affected (0.06 sec)
+
+MariaDB [myTestDB]> select * from v3;
++-----------------+
+| name            |
++-----------------+
+| Hard drive      |
+| Memory          |
+| ZIP drive       |
+| Floppy disk     |
+| Monitor         |
+| DVD drive       |
+| CD drive        |
+| Printer         |
+| Toner cartridge |
+| DVD burner      |
+| USB Driver      |
+| USB Driver      |
+| iPhone X        |
+| iPhone 8        |
++-----------------+
+14 rows in set (0.00 sec)
+
+MariaDB [myTestDB]> show create table products\G;
+*************************** 1. row ***************************
+       Table: products
+Create Table: CREATE TABLE `products` (
+  `Code` int(11) NOT NULL,
+  `Name` varchar(255) NOT NULL,
+  `Price` decimal(10,0) NOT NULL,
+  `Manufacturer` int(11) DEFAULT NULL,
+  PRIMARY KEY (`Code`),
+  KEY `Manufacturer` (`Manufacturer`),
+  CONSTRAINT `products_ibfk_1` FOREIGN KEY (`Manufacturer`) REFERENCES `manufacturers` (`CODE`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+1 row in set (0.00 sec)
+
+ERROR: No query specified
+
+MariaDB [myTestDB]> select * from v2;
++------+------------+
+| Code | Name       |
++------+------------+
+|    1 | Hard drive |
+|    3 | ZIP drive  |
+|    6 | DVD drive  |
+|    7 | CD drive   |
+|   11 | USB Driver |
+|   12 | USB Driver |
++------+------------+
+6 rows in set (0.00 sec)
+
+MariaDB [myTestDB]> UPDATE v2 SET name = 'monitor' WHERE Name = 'Monitor';
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+MariaDB [myTestDB]> select * from v2;
++------+------------+
+| Code | Name       |
++------+------------+
+|    1 | Hard drive |
+|    3 | ZIP drive  |
+|    6 | DVD drive  |
+|    7 | CD drive   |
+|   11 | USB Driver |
+|   12 | USB Driver |
++------+------------+
+6 rows in set (0.00 sec)
+
+MariaDB [myTestDB]> select * from products;
++------+-----------------+-------+--------------+
+| Code | Name            | Price | Manufacturer |
++------+-----------------+-------+--------------+
+|    1 | Hard drive      |   240 |            5 |
+|    2 | Memory          |   120 |            6 |
+|    3 | ZIP drive       |   150 |            4 |
+|    4 | Floppy disk     |     5 |            6 |
+|    5 | Monitor         |   240 |            1 |
+|    6 | DVD drive       |   180 |            2 |
+|    7 | CD drive        |    90 |            2 |
+|    8 | Printer         |   270 |            3 |
+|    9 | Toner cartridge |    66 |            3 |
+|   10 | DVD burner      |   180 |            2 |
+|   11 | USB Driver      |    40 |         NULL |
+|   12 | USB Driver      |    54 |         NULL |
+|   13 | iPhone X        |     0 |         NULL |
+|   14 | iPhone 8        |     0 |         NULL |
++------+-----------------+-------+--------------+
+14 rows in set (0.00 sec)
+
+MariaDB [myTestDB]> INSERT INTO v2 VALUES(15,'iPhone 9');
+Query OK, 1 row affected, 1 warning (0.05 sec)
+
+MariaDB [myTestDB]> select * from products;
++------+-----------------+-------+--------------+
+| Code | Name            | Price | Manufacturer |
++------+-----------------+-------+--------------+
+|    1 | Hard drive      |   240 |            5 |
+|    2 | Memory          |   120 |            6 |
+|    3 | ZIP drive       |   150 |            4 |
+|    4 | Floppy disk     |     5 |            6 |
+|    5 | Monitor         |   240 |            1 |
+|    6 | DVD drive       |   180 |            2 |
+|    7 | CD drive        |    90 |            2 |
+|    8 | Printer         |   270 |            3 |
+|    9 | Toner cartridge |    66 |            3 |
+|   10 | DVD burner      |   180 |            2 |
+|   11 | USB Driver      |    40 |         NULL |
+|   12 | USB Driver      |    54 |         NULL |
+|   13 | iPhone X        |     0 |         NULL |
+|   14 | iPhone 8        |     0 |         NULL |
+|   15 | iPhone 9        |     0 |         NULL |
++------+-----------------+-------+--------------+
+15 rows in set (0.00 sec)
+
+MariaDB [myTestDB]> select * from v2;
++------+------------+
+| Code | Name       |
++------+------------+
+|    1 | Hard drive |
+|    3 | ZIP drive  |
+|    6 | DVD drive  |
+|    7 | CD drive   |
+|   11 | USB Driver |
+|   12 | USB Driver |
++------+------------+
+6 rows in set (0.00 sec)
+
+MariaDB [myTestDB]> DELETE FROM v2 WHERE Code = 12;
+Query OK, 1 row affected (0.06 sec)
+
+MariaDB [myTestDB]> select * from v2;
++------+------------+
+| Code | Name       |
++------+------------+
+|    1 | Hard drive |
+|    3 | ZIP drive  |
+|    6 | DVD drive  |
+|    7 | CD drive   |
+|   11 | USB Driver |
++------+------------+
+5 rows in set (0.00 sec)
+
+MariaDB [myTestDB]> DELETE FROM v2 WHERE Code = 15;
+Query OK, 0 rows affected (0.00 sec)
+
+MariaDB [myTestDB]> select * from products;
++------+-----------------+-------+--------------+
+| Code | Name            | Price | Manufacturer |
++------+-----------------+-------+--------------+
+|    1 | Hard drive      |   240 |            5 |
+|    2 | Memory          |   120 |            6 |
+|    3 | ZIP drive       |   150 |            4 |
+|    4 | Floppy disk     |     5 |            6 |
+|    5 | Monitor         |   240 |            1 |
+|    6 | DVD drive       |   180 |            2 |
+|    7 | CD drive        |    90 |            2 |
+|    8 | Printer         |   270 |            3 |
+|    9 | Toner cartridge |    66 |            3 |
+|   10 | DVD burner      |   180 |            2 |
+|   11 | USB Driver      |    40 |         NULL |
+|   13 | iPhone X        |     0 |         NULL |
+|   14 | iPhone 8        |     0 |         NULL |
+|   15 | iPhone 9        |     0 |         NULL |
++------+-----------------+-------+--------------+
+14 rows in set (0.00 sec)
+
+MariaDB [myTestDB]> select * from pet;
++----------------+--------+---------+------+------------+------------+
+| name           | owner  | species | sex  | birth      | death      |
++----------------+--------+---------+------+------------+------------+
+| Fluffy         | Harold | cat     | f    | 1993-02-04 | 0000-00-00 |
+| Claws          | Gwen   | cat     | m    | 1994-03-17 | 0000-00-00 |
+| Buffy          | Harold | dog     | f    | 1989-05-13 | 0000-00-00 |
+| Fang           | Benny  | dog     | m    | 1990-08-27 | 0000-00-00 |
+| Bowser         | Diane  | dog     | m    | 1979-08-31 | 1995-07-29 |
+| Chirpy         | Gwen   | bird    | f    | 1998-09-11 | 0000-00-00 |
+| Whistler       | Gwen   | bird    |      | 1997-12-09 | 0000-00-00 |
+| Slim           | Benny  | snake   | m    | 1996-04-29 | 0000-00-00 |
+| Puffball       | Diane  | hamster | f    | 1999-03-30 | NULL       |
+| fo abddfodzxfo | herold | cat     | f    | 0000-00-00 | 0000-00-00 |
+| fofo           | herold | cat     | f    | 0000-00-00 | 0000-00-00 |
++----------------+--------+---------+------+------------+------------+
+11 rows in set (0.08 sec)
+
+MariaDB [myTestDB]> CREATE view v4 as select name,owner FROM pet;
+Query OK, 0 rows affected (0.08 sec)
+
+MariaDB [myTestDB]> select * from v4;
+
+MariaDB [myTestDB]> select * from v4;
++----------------+--------+
+| name           | owner  |
++----------------+--------+
+| Fluffy         | Harold |
+| Claws          | Gwen   |
+| Buffy          | Harold |
+| Fang           | Benny  |
+| Bowser         | Diane  |
+| Chirpy         | Gwen   |
+| Whistler       | Gwen   |
+| Slim           | Benny  |
+| Puffball       | Diane  |
+| fo abddfodzxfo | herold |
+| fofo           | herold |
++----------------+--------+
+11 rows in set (0.00 sec)
+
