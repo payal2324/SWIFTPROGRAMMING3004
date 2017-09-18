@@ -315,8 +315,7 @@ select * from student1 where 0' at line 1
     -> select * from student1 where snm like '_m%' or '_n%'; // string is not identified
 ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '// universally false
 select * from student1 where snm like '_m%' or '_n%'' at line 1
-    -> select * from student1 where snm where sage BETWEEN 20 and 25;
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '// string is not identified
+ 
 select * from student1 where snm where sage BETWEEN ' at line 1
 MariaDB [testdb]> select * from student1 where sage BETWEEN 20 and 25;
 +------+----------+--------+------+
