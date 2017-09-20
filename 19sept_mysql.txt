@@ -1,0 +1,221 @@
+﻿CREATE OR REPLACE PROCEDURE SP_FIRST()
+BEGIN
+SELECT * FROM products;
+END
+
+
+
+
+MariaDB [testdb]> CREATE OR REPLACE PROCEDURE SP_FIRST()
+    -> BEGIN
+    -> SELECT * FROM products;
+    -> END //
+Query OK, 0 rows affected (0.07 sec)
+
+
+MariaDB [testdb]> call SP_first;
+    -> //
++------+-----------------+-------+--------------+
+| Code | Name            | Price | Manufacturer |
++------+-----------------+-------+--------------+
+|    0 | iphone 8 plus   |     0 |         NULL |
+|    1 | HARD DRIVE      |   240 |         NULL |
+|    2 | Memory          |   120 |            6 |
+|    3 | ZIP drive       |   150 |            4 |
+|    4 | Floppy disk     |     5 |            6 |
+|    5 | Monitor         |   240 |            1 |
+|    6 | DVD drive       |   180 |            2 |
+|    7 | CD drive        |    90 |            2 |
+|    8 | Printer         |   270 |            3 |
+|    9 | Toner cartridge |    66 |            3 |
+|   10 | DVD burner      |   180 |            2 |
+|   11 | USB DRIVE       |   100 |         NULL |
+|   13 | iPhone x        |     0 |         NULL |
+|   14 | iPhone 8        |     0 |         NULL |
+|   15 | iphone 9 plus   |     0 |            6 |
+|   17 | yipeeh          |   560 |            5 |
++------+-----------------+-------+--------------+
+16 rows in set (0.06 sec)
+
+Query OK, 0 rows affected (0.17 sec)
+
+
+
+CREATE OR REPLACE PROCEDURE SP_Second(mid int(10))
+BEGIN
+SELECT * FROM products where Manufacturer=mid;
+END
+
+
+MariaDB [testdb]> CREATE OR REPLACE PROCEDURE SP_Second(mid int(10))
+    -> BEGIN
+    -> SELECT * FROM products where Manufacturer=mid;
+    -> END//
+Query OK, 0 rows affected (0.10 sec)
+
+MariaDB [testdb]> call sp_second(1)//
++------+---------+-------+--------------+
+| Code | Name    | Price | Manufacturer |
++------+---------+-------+--------------+
+|    5 | Monitor |   240 |            1 |
++------+---------+-------+--------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+
+
+MariaDB [testdb]> CREATE OR REPLACE PROCEDURE SP_Second(mid int(10))
+    -> BEGIN
+    -> SELECT * FROM products where Manufacturer=mid;
+    -> select count(*) from products;
+    -> END//
+Query OK, 0 rows affected (0.07 sec)
+
+MariaDB [testdb]> call sp_second(1)//
++------+---------+-------+--------------+
+| Code | Name    | Price | Manufacturer |
++------+---------+-------+--------------+
+|    5 | Monitor |   240 |            1 |
++------+---------+-------+--------------+
+1 row in set (0.00 sec)
+
++----------+
+| count(*) |
++----------+
+|       16 |
++----------+
+1 row in set (0.01 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+
+MariaDB [testdb]> CREATE OR REPLACE PROCEDURE SP_Second(mid int(10))
+    BEGIN
+	select @mname:= name from manufacturers where code=mid;
+    SELECT  code,name,price,@mname as manufacturer FROM products where manufacturer=mid;
+   
+    END//
+Query OK, 0 rows affected (0.07 sec)
+
+
+MariaDB [testdb]> CREATE OR REPLACE PROCEDURE SP_Second(mid int(10))
+    ->     BEGIN
+    -> select @mname:= name from manufacturers where code=mid;
+    ->     SELECT  code,name,price,@mname as manufacturer FROM products where manufacturer=mid;
+    ->
+    ->     END//
+Query OK, 0 rows affected (0.06 sec)
+
+MariaDB [testdb]> call sp_second(1)//
++---------------+
+| @mname:= name |
++---------------+
+| Sony          |
++---------------+
+1 row in set (0.00 sec)
+
++------+---------+-------+--------------+
+| code | name    | price | manufacturer |
++------+---------+-------+--------------+
+|    5 | Monitor |   240 | Sony         |
++------+---------+-------+--------------+
+1 row in set (0.01 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+
+MariaDB [testdb]> CREATE PROCEDURE Spop(a int(2) , b int(2), c char(1))
+    -> BEGIN
+    -> If c=’+’
+    -> then
+    -> Select a+b as "addition";
+    -> Else
+    -> Select a-b as "subtraction";
+    -> End if;
+    -> End//
+Query OK, 0 rows affected (0.11 sec)
+
+MariaDB [testdb]> call spop(24,4,'+')//
++----------+
+| addition |
++----------+
+|       28 |
++----------+
+1 row in set (0.00 sec)
+
+
+MariaDB [testdb]> call spop(24,4,'-')//
++-------------+
+| subtraction |
++-------------+
+|          20 |
++-------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+
+MariaDB [testdb]> CREATE  or Replace procedure arithmetic(a int(2) , b int(2), c char(1),  out va int)
+    ->     BEGIN
+    -> set @z=0;
+    ->     If c=’+’
+    ->     then
+    ->     Set @z= a+b ;
+    ->
+    ->
+    ->     set va = @z;
+    ->      End if;
+    ->      End ; //
+Query OK, 0 rows affected (0.08 sec)
+
+MariaDB [testdb]>   call arithmetic(2,4,'+',@total)//
+Query OK, 0 rows affected (0.00 sec)
+
+MariaDB [testdb]> select @total//
++--------+
+| @total |
++--------+
+|      6 |
++--------+
+1 row in set (0.00 sec)
+
+MariaDB [testdb]>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+cursor
+
+
+CREATE PROCEDURE SP2(x VARCHAR(5))
+BEGIN
+DECLARE xNAME VARCHAR(25) DEFAULT 'None';
+DECLARE xPRICE DECIMAL(10,2);
+DECLARE xCODE INT;
+DECLARE done TINYINT DEFAULT 0;
+DECLARE cur1 CURSOR FOR SELECT code,name,price from PRODUCTS;
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET done=1;
+
+OPEN cur1;
+read_loop: LOOP
+ FETCH FROM cur1 INTO xCODE, xNAME, xPRICE;
+ IF done THEN LEAVE read_loop;
+ End if;
+ SELECT xCODE, xNAME,xPRICE;
+ END LOOP;
+ CLOSE cur1;
+ END;
+
+

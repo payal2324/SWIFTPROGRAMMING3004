@@ -1,0 +1,289 @@
+
+MariaDB [(none)]> use testdb;
+Database changed
+MariaDB [testdb]> select * from products;
++------+-----------------+-------+--------------+
+| Code | Name            | Price | Manufacturer |
++------+-----------------+-------+--------------+
+|    0 | iphone 8 plus   |     0 |         NULL |
+|    1 | HARD DRIVE      |   240 |         NULL |
+|    2 | Memory          |   120 |            6 |
+|    3 | ZIP drive       |   150 |            4 |
+|    4 | Floppy disk     |     5 |            6 |
+|    5 | Monitor         |   240 |            1 |
+|    6 | DVD drive       |   180 |            2 |
+|    7 | CD drive        |    90 |            2 |
+|    8 | Printer         |   270 |            3 |
+|    9 | Toner cartridge |    66 |            3 |
+|   10 | DVD burner      |   180 |            2 |
+|   11 | USB DRIVE       |   100 |         NULL |
+|   13 | iPhone x        |     0 |         NULL |
+|   14 | iPhone 8        |     0 |         NULL |
+|   15 | iphone 9 plus   |     0 |            6 |
+|   17 | yipeeh          |   560 |            5 |
++------+-----------------+-------+--------------+
+16 rows in set (0.03 sec)
+
+MariaDB [testdb]> set autocommit=0;
+Query OK, 0 rows affected (0.05 sec)
+
+MariaDB [testdb]> insert into products values(18,'gf',56,5);
+Query OK, 1 row affected (0.09 sec)
+
+MariaDB [testdb]> select * from products;
++------+-----------------+-------+--------------+
+| Code | Name            | Price | Manufacturer |
++------+-----------------+-------+--------------+
+|    0 | iphone 8 plus   |     0 |         NULL |
+|    1 | HARD DRIVE      |   240 |         NULL |
+|    2 | Memory          |   120 |            6 |
+|    3 | ZIP drive       |   150 |            4 |
+|    4 | Floppy disk     |     5 |            6 |
+|    5 | Monitor         |   240 |            1 |
+|    6 | DVD drive       |   180 |            2 |
+|    7 | CD drive        |    90 |            2 |
+|    8 | Printer         |   270 |            3 |
+|    9 | Toner cartridge |    66 |            3 |
+|   10 | DVD burner      |   180 |            2 |
+|   11 | USB DRIVE       |   100 |         NULL |
+|   13 | iPhone x        |     0 |         NULL |
+|   14 | iPhone 8        |     0 |         NULL |
+|   15 | iphone 9 plus   |     0 |            6 |
+|   17 | yipeeh          |   560 |            5 |
+|   18 | gf              |    56 |            5 |
++------+-----------------+-------+--------------+
+17 rows in set (0.00 sec)
+
+MariaDB [testdb]> rollback;
+Query OK, 0 rows affected (0.08 sec)
+
+MariaDB [testdb]> select * from products;
++------+-----------------+-------+--------------+
+| Code | Name            | Price | Manufacturer |
++------+-----------------+-------+--------------+
+|    0 | iphone 8 plus   |     0 |         NULL |
+|    1 | HARD DRIVE      |   240 |         NULL |
+|    2 | Memory          |   120 |            6 |
+|    3 | ZIP drive       |   150 |            4 |
+|    4 | Floppy disk     |     5 |            6 |
+|    5 | Monitor         |   240 |            1 |
+|    6 | DVD drive       |   180 |            2 |
+|    7 | CD drive        |    90 |            2 |
+|    8 | Printer         |   270 |            3 |
+|    9 | Toner cartridge |    66 |            3 |
+|   10 | DVD burner      |   180 |            2 |
+|   11 | USB DRIVE       |   100 |         NULL |
+|   13 | iPhone x        |     0 |         NULL |
+|   14 | iPhone 8        |     0 |         NULL |
+|   15 | iphone 9 plus   |     0 |            6 |
+|   17 | yipeeh          |   560 |            5 |
++------+-----------------+-------+--------------+
+16 rows in set (0.00 sec)
+
+MariaDB [testdb]> insert into products values(18,'gf',56,5);
+Query OK, 1 row affected (0.03 sec)
+
+MariaDB [testdb]> commit;
+Query OK, 0 rows affected (0.06 sec)
+
+MariaDB [testdb]> select * from products;
++------+-----------------+-------+--------------+
+| Code | Name            | Price | Manufacturer |
++------+-----------------+-------+--------------+
+|    0 | iphone 8 plus   |     0 |         NULL |
+|    1 | HARD DRIVE      |   240 |         NULL |
+|    2 | Memory          |   120 |            6 |
+|    3 | ZIP drive       |   150 |            4 |
+|    4 | Floppy disk     |     5 |            6 |
+|    5 | Monitor         |   240 |            1 |
+|    6 | DVD drive       |   180 |            2 |
+|    7 | CD drive        |    90 |            2 |
+|    8 | Printer         |   270 |            3 |
+|    9 | Toner cartridge |    66 |            3 |
+|   10 | DVD burner      |   180 |            2 |
+|   11 | USB DRIVE       |   100 |         NULL |
+|   13 | iPhone x        |     0 |         NULL |
+|   14 | iPhone 8        |     0 |         NULL |
+|   15 | iphone 9 plus   |     0 |            6 |
+|   17 | yipeeh          |   560 |            5 |
+|   18 | gf              |    56 |            5 |
++------+-----------------+-------+--------------+
+17 rows in set (0.00 sec)
+
+MariaDB [testdb]> rollback;
+Query OK, 0 rows affected (0.00 sec)
+
+MariaDB [testdb]> select * from products;
++------+-----------------+-------+--------------+
+| Code | Name            | Price | Manufacturer |
++------+-----------------+-------+--------------+
+|    0 | iphone 8 plus   |     0 |         NULL |
+|    1 | HARD DRIVE      |   240 |         NULL |
+|    2 | Memory          |   120 |            6 |
+|    3 | ZIP drive       |   150 |            4 |
+|    4 | Floppy disk     |     5 |            6 |
+|    5 | Monitor         |   240 |            1 |
+|    6 | DVD drive       |   180 |            2 |
+|    7 | CD drive        |    90 |            2 |
+|    8 | Printer         |   270 |            3 |
+|    9 | Toner cartridge |    66 |            3 |
+|   10 | DVD burner      |   180 |            2 |
+|   11 | USB DRIVE       |   100 |         NULL |
+|   13 | iPhone x        |     0 |         NULL |
+|   14 | iPhone 8        |     0 |         NULL |
+|   15 | iphone 9 plus   |     0 |            6 |
+|   17 | yipeeh          |   560 |            5 |
+|   18 | gf              |    56 |            5 |
++------+-----------------+-------+--------------+
+17 rows in set (0.00 sec)
+
+MariaDB [testdb]> update products set name='Mouse' where  code=18;
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [testdb]> commit;
+Query OK, 0 rows affected (0.09 sec)
+
+MariaDB [testdb]> update products set name='Mouse' ;
+Query OK, 16 rows affected (0.05 sec)
+Rows matched: 17  Changed: 16  Warnings: 0
+
+MariaDB [testdb]> select * from products;
++------+-------+-------+--------------+
+| Code | Name  | Price | Manufacturer |
++------+-------+-------+--------------+
+|    0 | Mouse |     0 |         NULL |
+|    1 | Mouse |   240 |         NULL |
+|    2 | Mouse |   120 |            6 |
+|    3 | Mouse |   150 |            4 |
+|    4 | Mouse |     5 |            6 |
+|    5 | Mouse |   240 |            1 |
+|    6 | Mouse |   180 |            2 |
+|    7 | Mouse |    90 |            2 |
+|    8 | Mouse |   270 |            3 |
+|    9 | Mouse |    66 |            3 |
+|   10 | Mouse |   180 |            2 |
+|   11 | Mouse |   100 |         NULL |
+|   13 | Mouse |     0 |         NULL |
+|   14 | Mouse |     0 |         NULL |
+|   15 | Mouse |     0 |            6 |
+|   17 | Mouse |   560 |            5 |
+|   18 | Mouse |    56 |            5 |
++------+-------+-------+--------------+
+17 rows in set (0.00 sec)
+
+MariaDB [testdb]> rollback;
+Query OK, 0 rows affected (0.11 sec)
+
+MariaDB [testdb]> select * from products;
++------+-----------------+-------+--------------+
+| Code | Name            | Price | Manufacturer |
++------+-----------------+-------+--------------+
+|    0 | iphone 8 plus   |     0 |         NULL |
+|    1 | HARD DRIVE      |   240 |         NULL |
+|    2 | Memory          |   120 |            6 |
+|    3 | ZIP drive       |   150 |            4 |
+|    4 | Floppy disk     |     5 |            6 |
+|    5 | Monitor         |   240 |            1 |
+|    6 | DVD drive       |   180 |            2 |
+|    7 | CD drive        |    90 |            2 |
+|    8 | Printer         |   270 |            3 |
+|    9 | Toner cartridge |    66 |            3 |
+|   10 | DVD burner      |   180 |            2 |
+|   11 | USB DRIVE       |   100 |         NULL |
+|   13 | iPhone x        |     0 |         NULL |
+|   14 | iPhone 8        |     0 |         NULL |
+|   15 | iphone 9 plus   |     0 |            6 |
+|   17 | yipeeh          |   560 |            5 |
+|   18 | Mouse           |    56 |            5 |
++------+-----------------+-------+--------------+
+17 rows in set (0.00 sec)
+
+MariaDB [testdb]> delete * from products;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '* from products' at line 1
+MariaDB [testdb]> delete from products;
+Query OK, 17 rows affected (0.05 sec)
+
+MariaDB [testdb]> select * from products;
+Empty set (0.00 sec)
+
+MariaDB [testdb]> rollback;
+Query OK, 0 rows affected (0.12 sec)
+
+MariaDB [testdb]> select * from products;
++------+-----------------+-------+--------------+
+| Code | Name            | Price | Manufacturer |
++------+-----------------+-------+--------------+
+|    0 | iphone 8 plus   |     0 |         NULL |
+|    1 | HARD DRIVE      |   240 |         NULL |
+|    2 | Memory          |   120 |            6 |
+|    3 | ZIP drive       |   150 |            4 |
+|    4 | Floppy disk     |     5 |            6 |
+|    5 | Monitor         |   240 |            1 |
+|    6 | DVD drive       |   180 |            2 |
+|    7 | CD drive        |    90 |            2 |
+|    8 | Printer         |   270 |            3 |
+|    9 | Toner cartridge |    66 |            3 |
+|   10 | DVD burner      |   180 |            2 |
+|   11 | USB DRIVE       |   100 |         NULL |
+|   13 | iPhone x        |     0 |         NULL |
+|   14 | iPhone 8        |     0 |         NULL |
+|   15 | iphone 9 plus   |     0 |            6 |
+|   17 | yipeeh          |   560 |            5 |
+|   18 | Mouse           |    56 |            5 |
++------+-----------------+-------+--------------+
+17 rows in set (0.00 sec)
+
+MariaDB [testdb]> select * from pets;
++----------+--------+---------+------+------------+------------+
+| name     | owner  | species | sex  | birth      | death      |
++----------+--------+---------+------+------------+------------+
+| Fluffy   | Harold | cat     | f    | 1993-02-04 | 0000-00-00 |
+| Claws    | Gwen   | cat     | m    | 1994-03-17 | 0000-00-00 |
+| Buffy    | Harold | dog     | f    | 1989-05-13 | 0000-00-00 |
+| Fang     | Benny  | dog     | m    | 1990-08-27 | 0000-00-00 |
+| Bowser   | Diane  | dog     | m    | 1979-08-31 | 1995-07-29 |
+| Chirpy   | Gwen   | bird    | f    | 1998-09-11 | 0000-00-00 |
+| Whistler | Gwen   | bird    |      | 1997-12-09 | 0000-00-00 |
+| Slim     | Benny  | snake   | m    | 1996-04-29 | 0000-00-00 |
++----------+--------+---------+------+------------+------------+
+8 rows in set (0.04 sec)
+
+MariaDB [testdb]> drop table pets;
+Query OK, 0 rows affected (0.20 sec)
+
+MariaDB [testdb]> select * from products;
++------+-----------------+-------+--------------+
+| Code | Name            | Price | Manufacturer |
++------+-----------------+-------+--------------+
+|    0 | iphone 8 plus   |     0 |         NULL |
+|    1 | HARD DRIVE      |   240 |         NULL |
+|    2 | Memory          |   120 |            6 |
+|    3 | ZIP drive       |   150 |            4 |
+|    4 | Floppy disk     |     5 |            6 |
+|    5 | Monitor         |   240 |            1 |
+|    6 | DVD drive       |   180 |            2 |
+|    7 | CD drive        |    90 |            2 |
+|    8 | Printer         |   270 |            3 |
+|    9 | Toner cartridge |    66 |            3 |
+|   10 | DVD burner      |   180 |            2 |
+|   11 | USB DRIVE       |   100 |         NULL |
+|   13 | iPhone x        |     0 |         NULL |
+|   14 | iPhone 8        |     0 |         NULL |
+|   15 | iphone 9 plus   |     0 |            6 |
+|   17 | yipeeh          |   560 |            5 |
+|   18 | Mouse           |    56 |            5 |
++------+-----------------+-------+--------------+
+17 rows in set (0.00 sec)
+
+MariaDB [testdb]> select * from pets;
+ERROR 1146 (42S02): Table 'testdb.pets' doesn't exist
+MariaDB [testdb]> rollback;
+Query OK, 0 rows affected (0.00 sec)
+
+MariaDB [testdb]>
+MariaDB [testdb]>
+MariaDB [testdb]> select * from pets;
+ERROR 1146 (42S02): Table 'testdb.pets' doesn't exist
+MariaDB [testdb]>
+
